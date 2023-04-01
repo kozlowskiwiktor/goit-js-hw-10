@@ -12,9 +12,11 @@ const fetchCountry = (name) => {
   let countryName = `https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`;
   return fetch(countryName)
     .then(response => {
-      if (!response.ok) {
+      if (response.url === 'https://restcountries.com/v3.1/name/?fields=name,capital,population,flags,languages') {
+        Notiflix.Notify.info("Please enter a country name")
+      } else if (!response.ok) {
         throw new Error(response.status);
-      }
+      } 
       return response.json();
     })
 }
@@ -24,13 +26,15 @@ countryInput.addEventListener('input',
     fetchCountry(countryInput.value.trim())
       .then(countries => {
         selectedCountry(countries);
-        console.log(countries);
       })
       .catch(error => {
-        Notiflix.Notify.failure('Oops, there is no country with that name');
+        if (error) {
+          Notiflix.Notify.failure('Oops, there is no country with that name');
+        }
+        console.log(error)
       });
     }, DEBOUNCE_DELAY)
-    );
+);
     
 const selectedCountry = (countries) => {
   if (countries.length > 10) {
