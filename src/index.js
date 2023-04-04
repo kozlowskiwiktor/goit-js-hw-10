@@ -14,6 +14,8 @@ const fetchCountry = (name) => {
     .then(response => {
       if (response.url === 'https://restcountries.com/v3.1/name/?fields=name,capital,population,flags,languages') {
         Notiflix.Notify.info("Please enter a country name")
+    countryList.innerHTML = '';
+    countryInfo.innerHTML = '';
       } else if (!response.ok) {
         throw new Error(response.status);
       } 
